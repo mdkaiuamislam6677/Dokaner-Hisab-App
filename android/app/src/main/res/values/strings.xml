@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">দোকানের হিসাব (Dokaner Hisab)</string>
+    <string name="app_short_name">দোকানের হিসাব</string>
+    <string name="nav_inventory">ইনভেন্টরি</string>
+    <string name="nav_expenses">খরচ</string>
+    <string name="nav_dues">বাকির খাতা</string>
+    <string name="nav_mini_khata">ছোট বাকি</string>
+    <string name="nav_analytics">অ্যানালিটিক্স</string>
+    <string name="nav_tips">টিপস</string>
+    <string name="currency_symbol">৳</string>
+    <string name="search_hint">পণ্য, ব্র্যান্ড বা SKU লিখে বা মুখে বলুন...</string>
+    <string name="due_search_hint">গ্রাহকের নাম বা মোবাইল লিখে খুঁজুন...</string>
+    <string name="mini_search_hint">ছোট বাকি গ্রাহক খুঁজুন...</string>
+</resources>

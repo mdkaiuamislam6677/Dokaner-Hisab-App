@@ -1,0 +1,23 @@
+{
+  "name": "Dokaner Hisab - দোকানের হিসাব",
+  "short_name": "Dokaner Hisab",
+  "description": "দোকানের হিসাব: ইনভেন্টরি, পাইকারি ও খুচরা বিক্রয়, খরচ ও বাকির খাতা",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0f1d",
+  "theme_color": "#059669",
+  "icons": [
+    {
+      "src": "/icon-192.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

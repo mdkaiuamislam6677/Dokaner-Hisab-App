@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="bn" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dokaner Hisab - Store Inventory & Due Manager (দোকানের হিসাব)</title>
+    <meta name="description" content="Dokaner Hisab: Production-ready app for store inventory tracking, buy/sell wholesale & retail pricing, expense management, customer dues, and financial analytics with Bengali & English support." />
+    <meta property="og:title" content="Dokaner Hisab - দোকানের হিসাব" />
+    <meta property="og:description" content="Dokaner Hisab: Track products, wholesale and retail sales, expenses, customer dues, and export reports." />
+    <meta name="theme-color" content="#059669" />
+    <link rel="icon" type="image/jpeg" href="/app-logo.jpg" />
+    <link rel="apple-touch-icon" href="/icon-192.jpg" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', '"Hind Siliguri"', 'sans-serif'],
+              bengali: ['"Hind Siliguri"', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: '#ecfdf5',
+                100: '#d1fae5',
+                500: '#10b981',
+                600: '#059669',
+                700: '#047857',
+              },
+              darkbg: '#0a0f1d',
+              darkcard: '#111827',
+              darksurface: '#1e293b',
+              neoncyan: '#06b6d4',
+              neonemerald: '#10b981',
+              neonpurple: '#8b5cf6',
+            }
+          }
+        }
+      }
+    </script>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- SheetJS (xlsx) CDN -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
+      }
+      .glass-card {
+        background: rgba(17, 24, 39, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .light .glass-card {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+      }
+      .glass-modal {
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .light .glass-modal {
+        background: rgba(255, 255, 255, 0.98);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+      }
+      .scrollbar-thin::-webkit-scrollbar {
+        height: 6px;
+        width: 6px;
+      }
+      .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 4px;
+      }
+      .scrollbar-thin::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      @media print {
+        .no-print { display: none !important; }
+        body { background: white !important; color: black !important; }
+        .glass-card { border: 1px solid #ddd !important; box-shadow: none !important; background: white !important; }
+      }
+    </style>
+  </head>
+  <body class="bg-darkbg text-slate-100 min-h-screen transition-colors duration-200 antialiased selection:bg-emerald-500 selection:text-white">
+    <!-- Main Shell Container -->
+    <div id="app" class="flex flex-col min-h-screen"></div>
+
+    <!-- Core App Logic (Bundled Module) -->
+    <script type="module" src="/src/main.js"></script>
+    <script>
+      window.deferredInstallPrompt = null;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        window.deferredInstallPrompt = e;
+      });
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>

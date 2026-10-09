@@ -1,0 +1,6 @@
+{
+  "name": "StockFlow Pro - Inventory & Expense Manager",
+  "description": "Production-ready SPA for inventory tracking, buy/sell wholesale & retail pricing, expense management, dynamic analytics, and Excel export with Bengali and English support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
