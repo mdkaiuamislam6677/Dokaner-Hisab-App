@@ -24,14 +24,22 @@ jobs:
         channel: 'stable'
         cache: true
 
-    - name: Install Dependencies
+    - name: Locate Flutter Project & Build
       run: |
-        if [ -d "flutter" ]; then cd flutter; fi
+        if [ -f "pubspec.yaml" ]; then
+          echo "Flutter project found in root directory"
+          PROJECT_DIR="."
+        elif [ -d "flutter" ] && [ -f "flutter/pubspec.yaml" ]; then
+          echo "Flutter project found in /flutter directory"
+          PROJECT_DIR="flutter"
+        else
+          echo "Searching for pubspec.yaml..."
+          PROJECT_DIR=$(dirname $(find . -maxdepth 3 -name "pubspec.yaml" | head -n 1))
+        fi
+        
+        echo "Navigating to $PROJECT_DIR"
+        cd $PROJECT_DIR
         flutter pub get
-
-    - name: Build APK
-      run: |
-        if [ -d "flutter" ]; then cd flutter; fi
         flutter build apk --release --no-tree-shake-icons
 
     - name: Upload APK
@@ -39,3 +47,4 @@ jobs:
       with:
         name: Dokaner-Hisab-App
         path: "**/build/app/outputs/flutter-apk/app-release.apk"
+        
