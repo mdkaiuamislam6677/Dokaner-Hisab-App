@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../models/product.dart';
 import '../../services/firestore_service.dart';
 
@@ -14,6 +15,7 @@ class _InventoryTabState extends State<InventoryTab> {
   String _searchQuery = '';
 
   void _showProductDialog([Product? existing]) {
+    final formKey = GlobalKey<FormState>();
     final nameController = TextEditingController(text: existing?.name ?? '');
     final categoryController = TextEditingController(text: existing?.category ?? 'সাধারণ');
     final buyPriceController = TextEditingController(text: existing != null ? existing.buyPrice.toString() : '');
@@ -32,71 +34,152 @@ class _InventoryTabState extends State<InventoryTab> {
           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(labelText: 'পণ্যের নাম *', labelStyle: TextStyle(color: Colors.grey)),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: categoryController,
-                style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(labelText: 'ক্যাটাগরি', labelStyle: TextStyle(color: Colors.grey)),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: buyPriceController,
-                      keyboardType: TextInputType.number,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(labelText: 'কেনা দাম (৳) *', labelStyle: TextStyle(color: Colors.grey)),
-                    ),
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: nameController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'পণ্যের নাম *',
+                    labelStyle: TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(),
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      controller: wholesaleController,
-                      keyboardType: TextInputType.number,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(labelText: 'পাইকারি (৳)', labelStyle: TextStyle(color: Colors.grey)),
-                    ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'দয়া করে পণ্যের নাম লিখুন';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: categoryController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'ক্যাটাগরি',
+                    labelStyle: TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(),
                   ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: retailController,
-                      keyboardType: TextInputType.number,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(labelText: 'খুচরা দাম (৳) *', labelStyle: TextStyle(color: Colors.grey)),
-                    ),
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: buyPriceController,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'কেনা দাম (Cost) ৳',
+                    labelStyle: TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(),
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      controller: stockController,
-                      keyboardType: TextInputType.number,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(labelText: 'স্টক পরিমাণ *', labelStyle: TextStyle(color: Colors.grey)),
+                  // ইনপুট ফরম্যাটারটি দশমিক ও দুটি সংখ্যা পর্যন্ত অনুমোদন করবে
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+                  ],
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'দয়া করে কেনা দাম লিখুন';
+                    }
+                    if (double.tryParse(value) == null) {
+                      return 'সঠিক সংখ্যা লিখুন';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    // এখানে আপনার প্রাইজ ক্যালকুলেশন বা স্টেট আপডেট লজিক থাকবে
+                    final cost = double.tryParse(value);
+                    if (cost != null && retailController.text.isEmpty) {
+                      // যদি খুচরা দাম খালি থাকে তবে ডিফল্ট মার্জিন যোগ করতে পারেন
+                    }
+                  },
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: wholesaleController,
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        style: const TextStyle(color: Colors.white),
+                        decoration: const InputDecoration(
+                          labelText: 'পাইকারি (৳)',
+                          labelStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(),
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: unitController,
-                style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(labelText: 'একক (পিস / কেজি / লিটার)', labelStyle: TextStyle(color: Colors.grey)),
-              ),
-            ],
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: TextFormField(
+                        controller: retailController,
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        style: const TextStyle(color: Colors.white),
+                        decoration: const InputDecoration(
+                          labelText: 'খুচরা দাম (৳) *',
+                          labelStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(),
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+                        ],
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'দয়া করে খুচরা দাম লিখুন';
+                          }
+                          if (double.tryParse(value) == null) {
+                            return 'সঠিক সংখ্যা লিখুন';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: stockController,
+                        keyboardType: TextInputType.number,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: const InputDecoration(
+                          labelText: 'স্টক পরিমাণ *',
+                          labelStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(),
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'স্টক লিখুন';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: TextFormField(
+                        controller: unitController,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: const InputDecoration(
+                          labelText: 'একক',
+                          labelStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
         actions: [
@@ -107,6 +190,9 @@ class _InventoryTabState extends State<InventoryTab> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF10B981)),
             onPressed: () async {
+              if (!formKey.currentState!.validate()) {
+                return;
+              }
               final name = nameController.text.trim();
               final buyPrice = double.tryParse(buyPriceController.text.trim()) ?? 0.0;
               final retailPrice = double.tryParse(retailController.text.trim()) ?? 0.0;
@@ -114,8 +200,6 @@ class _InventoryTabState extends State<InventoryTab> {
               final stock = int.tryParse(stockController.text.trim()) ?? 0;
               final unit = unitController.text.trim().isEmpty ? 'পিস' : unitController.text.trim();
               final cat = categoryController.text.trim().isEmpty ? 'সাধারণ' : categoryController.text.trim();
-
-              if (name.isEmpty) return;
 
               final product = Product(
                 id: existing?.id ?? '',

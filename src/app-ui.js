@@ -2590,15 +2590,15 @@ window.AppUI = {
               <div class="grid grid-cols-3 gap-3">
                 <div>
                   <label class="block text-slate-300 text-xs mb-1 font-bengali">কেনা দাম (Cost) ৳ *</label>
-                  <input required type="number" step="0.5" name="costPrice" value="${item ? item.costPrice : ''}" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-rose-300 font-mono focus:outline-none focus:border-emerald-500">
+                  <input required type="number" step="0.01" min="0" name="costPrice" value="${item ? item.costPrice : ''}" placeholder="0.00" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-rose-300 font-mono focus:outline-none focus:border-emerald-500">
                 </div>
                 <div>
                   <label class="block text-slate-300 text-xs mb-1 font-bengali">পাইকারি দাম ৳ *</label>
-                  <input required type="number" step="0.5" name="wholesalePrice" value="${item ? item.wholesalePrice : ''}" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-blue-300 font-mono focus:outline-none focus:border-emerald-500">
+                  <input required type="number" step="0.01" min="0" name="wholesalePrice" value="${item ? item.wholesalePrice : ''}" placeholder="0.00" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-blue-300 font-mono focus:outline-none focus:border-emerald-500">
                 </div>
                 <div>
                   <label class="block text-slate-300 text-xs mb-1 font-bengali">খুচরা দাম ৳ *</label>
-                  <input required type="number" step="0.5" name="retailPrice" value="${item ? item.retailPrice : ''}" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-emerald-400 font-mono focus:outline-none focus:border-emerald-500">
+                  <input required type="number" step="0.01" min="0" name="retailPrice" value="${item ? item.retailPrice : ''}" placeholder="0.00" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-emerald-400 font-mono focus:outline-none focus:border-emerald-500">
                 </div>
               </div>
             </div>
