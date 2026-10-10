@@ -24,28 +24,17 @@ jobs:
         channel: 'stable'
         cache: true
 
-    - name: Locate Flutter Project & Build
+    - name: Build Android APK
       run: |
-        if [ -f "pubspec.yaml" ]; then
-          echo "Flutter project found in root directory"
-          PROJECT_DIR="."
-        elif [ -d "flutter" ] && [ -f "flutter/pubspec.yaml" ]; then
-          echo "Flutter project found in /flutter directory"
-          PROJECT_DIR="flutter"
-        else
-          echo "Searching for pubspec.yaml..."
-          PROJECT_DIR=$(dirname $(find . -maxdepth 3 -name "pubspec.yaml" | head -n 1))
-        fi
-        
-        echo "Navigating to $PROJECT_DIR"
-        cd $PROJECT_DIR
+        cd flutter
+        flutter clean
         flutter pub get
-        flutter build apk --release --no-tree-shake-icons
+        flutter build apk --debug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: Dokaner-Hisab-App
-        path: "**/build/app/outputs/flutter-apk/app-release.apk"
+        path: "flutter/build/app/outputs/flutter-apk/*.apk"
 
          
